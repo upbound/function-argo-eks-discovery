@@ -1,0 +1,45 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.12.1
+  name: responses.dummy.fn.crossplane.io
+spec:
+  group: eksdiscovery.fn.crossplane.io
+  names:
+    categories:
+    - crossplane
+    kind: Response
+    listKind: ResponseList
+    plural: responses
+    singular: response
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: Response specifies Patch & Transform resource templates.
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          response:
+            description: Response must be a RunFunctionResponse in YAML/JSON form.
+              The Function will always return exactly this response when called.
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        required:
+        - response
+        type: object
+    served: true
+    storage: true

@@ -1,0 +1,13 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xeks.argo.discover.upbound.io
+spec:
+  compositeTypeRef:
+    apiVersion: argo.discover.upbound.io/v1alpha1
+    kind: EKS
+  mode: Pipeline
+  pipeline:
+  - step: return-argocd-cluster-managed-resources
+    functionRef:
+      name: function-argo-eks-discovery

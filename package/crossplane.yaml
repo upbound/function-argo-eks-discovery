@@ -1,0 +1,11 @@
+---
+apiVersion: meta.pkg.crossplane.io/v1beta1
+kind: Function
+metadata:
+  name: function-argo-eks-discovery
+  annotations:
+    meta.crossplane.io/maintainer: Upbound Maintainers <support@upbound.io>
+    meta.crossplane.io/source: github.com/upbound/function-argo-eks-discovery
+    meta.crossplane.io/license: Apache-2.0
+    meta.crossplane.io/description: A composition function that search for eks cluster and create argocd cluster managed resource
+spec: {}
