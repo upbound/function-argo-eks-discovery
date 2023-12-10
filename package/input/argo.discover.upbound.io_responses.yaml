@@ -4,9 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.12.1
-  name: responses.dummy.fn.crossplane.io
+  name: responses.argo.discover.upbound.io
 spec:
-  group: eksdiscovery.fn.crossplane.io
+  group: argo.discover.upbound.io
   names:
     categories:
     - crossplane

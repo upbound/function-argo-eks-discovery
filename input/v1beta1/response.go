@@ -1,6 +1,6 @@
 // Package v1beta1 contains the input type for the Dummy Function
 // +kubebuilder:object:generate=true
-// +groupName=eksdiscovery.fn.crossplane.io
+// +groupName=argo.discover.upbound.io
 // +versionName=v1beta1
 package v1beta1
 
