@@ -2,6 +2,7 @@ apiVersion: argo.discover.upbound.io/v1alpha1
 kind: EKS
 metadata:
   name: aws-609897127049
+  namespace: default
 spec:
   awsAccountId: "609897127049"
   argoRoleArn: arn:aws:iam::609897127049:role/argocd-test

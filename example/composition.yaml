@@ -5,9 +5,9 @@ metadata:
 spec:
   compositeTypeRef:
     apiVersion: argo.discover.upbound.io/v1alpha1
-    kind: EKS
+    kind: XEKS
   mode: Pipeline
   pipeline:
   - step: return-argocd-cluster-managed-resources
     functionRef:
-      name: function-argo-eks-discovery
+      name: upbound-function-argo-eks-discovery
