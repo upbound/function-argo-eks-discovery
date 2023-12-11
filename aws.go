@@ -12,7 +12,7 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/errors"
 )
 
-const webIdentityTokenFileDefaultPath = "/var/run/secrets/upbound.io/function/token"
+const webIdentityTokenFileDefaultPath = "/var/run/secrets/upbound.io/provider/token"
 
 func getWebidentityTokenFilePath() string {
 	if path := os.Getenv("AWS_WEB_IDENTITY_TOKEN_FILE"); path != "" {
