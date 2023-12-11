@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 
 	"github.com/aws/aws-sdk-go-v2/service/eks"
+	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/crossplane-contrib/provider-argocd/apis/cluster/v1alpha1"
 
 	"github.com/crossplane/crossplane-runtime/pkg/errors"
@@ -83,6 +84,14 @@ func (f *Function) RunFunction(ctx context.Context, req *fnv1beta1.RunFunctionRe
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to load assumed role AWS config")
 	}
+
+	stsSvc := sts.NewFromConfig(*session)
+	callerIdentity, err := stsSvc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get STS caller identity")
+	}
+
+	f.log.Info("AWS Identity:", "name", callerIdentity)
 
 	// Create an EKS client
 	eksClient := eks.NewFromConfig(*session)

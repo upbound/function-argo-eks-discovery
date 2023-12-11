@@ -6,8 +6,7 @@ metadata:
 spec:
   awsAccountId: "609897127049"
   argoRoleArn: arn:aws:iam::609897127049:role/argocd-test
-  assumeRoleArn: arn:aws:iam::609897127049:role/test-assume
-  # assumeRoleWithWebIdentityArn: arn:aws:iam::609897127049:role/test-assume
+  assumeRoleWithWebIdentityArn: arn:aws:iam::609897127049:role/test-assume
   region: "us-west-2"
   search:
     key: "crossplane-providerconfig"
