@@ -82,13 +82,16 @@ func (f *Function) RunFunction(ctx context.Context, req *fnv1beta1.RunFunctionRe
 	// Initialize an AWS session
 	session, err := initializeAWSSession(ctx, region, assumeRoleArn, assumeRoleWithWebIdentityArn)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to load assumed role AWS config")
+		response.Fatal(rsp, errors.Wrapf(err, "failed to load assumed role AWS config %T", req))
+		return rsp, nil
 	}
 
 	stsSvc := sts.NewFromConfig(*session)
 	callerIdentity, err := stsSvc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to get STS caller identity")
+		f.log.Info("failed to get STS caller identity", "error:", err)
+		response.Fatal(rsp, errors.Wrapf(err, "failed to get STS caller identity %T", req))
+		return rsp, nil
 	}
 
 	f.log.Info("AWS Identity:", "name", callerIdentity)
