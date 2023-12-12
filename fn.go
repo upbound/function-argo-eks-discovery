@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/crossplane-contrib/provider-argocd/apis/cluster/v1alpha1"
 
+	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 	"github.com/crossplane/crossplane-runtime/pkg/errors"
 	"github.com/crossplane/crossplane-runtime/pkg/logging"
 
@@ -37,39 +38,51 @@ func (f *Function) RunFunction(ctx context.Context, req *fnv1beta1.RunFunctionRe
 		return rsp, nil
 	}
 
-	region, err := xr.Resource.GetString("spec.region")
+	region, err := xr.Resource.GetString("spec.parameters.region")
 	if err != nil {
-		response.Fatal(rsp, errors.Wrapf(err, "cannot read spec.region field of %s", xr.Resource.GetKind()))
+		response.Fatal(rsp, errors.Wrapf(err, "cannot read spec.parameters.region field of %s", xr.Resource.GetKind()))
 		return rsp, nil
 	}
 
-	argoRoleArn, err := xr.Resource.GetString("spec.argoRoleArn")
+	deletionPolicy, err := xr.Resource.GetString("spec.parameters.deletionPolicy")
 	if err != nil {
-		response.Fatal(rsp, errors.Wrapf(err, "cannot read spec.argoRoleArn field of %s", xr.Resource.GetKind()))
+		response.Fatal(rsp, errors.Wrapf(err, "cannot read spec.parameters.deletionPolicy field of %s", xr.Resource.GetKind()))
 		return rsp, nil
 	}
 
-	assumeRoleArn, err := xr.Resource.GetString("spec.assumeRoleArn")
+	providerConfigName, err := xr.Resource.GetString("spec.parameters.providerConfigName")
+	if err != nil {
+		response.Fatal(rsp, errors.Wrapf(err, "cannot read spec.parameters.providerConfigName field of %s", xr.Resource.GetKind()))
+		return rsp, nil
+	}
+
+	argoRoleArn, err := xr.Resource.GetString("spec.parameters.argoRoleArn")
+	if err != nil {
+		response.Fatal(rsp, errors.Wrapf(err, "cannot read spec.parameters.argoRoleArn field of %s", xr.Resource.GetKind()))
+		return rsp, nil
+	}
+
+	assumeRoleArn, err := xr.Resource.GetString("spec.parameters.assumeRoleArn")
 	if err != nil {
 		// optional parameter
 		assumeRoleArn = ""
 	}
 
-	assumeRoleWithWebIdentityArn, err := xr.Resource.GetString("spec.assumeRoleWithWebIdentityArn")
+	assumeRoleWithWebIdentityArn, err := xr.Resource.GetString("spec.parameters.assumeRoleWithWebIdentityArn")
 	if err != nil {
 		// optional parameter
 		assumeRoleWithWebIdentityArn = ""
 	}
 
-	tagKey, err := xr.Resource.GetString("spec.search.key")
+	tagKey, err := xr.Resource.GetString("spec.parameters.search.key")
 	if err != nil {
-		response.Fatal(rsp, errors.Wrapf(err, "cannot read spec.search.key field of %s", xr.Resource.GetKind()))
+		response.Fatal(rsp, errors.Wrapf(err, "cannot read spec.parameters.search.key field of %s", xr.Resource.GetKind()))
 		return rsp, nil
 	}
 
-	tagValue, err := xr.Resource.GetString("spec.search.value")
+	tagValue, err := xr.Resource.GetString("spec.parameters.search.value")
 	if err != nil {
-		response.Fatal(rsp, errors.Wrapf(err, "cannot read spec.search.value field of %s", xr.Resource.GetKind()))
+		response.Fatal(rsp, errors.Wrapf(err, "cannot read spec.parameters.search.value field of %s", xr.Resource.GetKind()))
 		return rsp, nil
 	}
 
@@ -171,6 +184,16 @@ func (f *Function) RunFunction(ctx context.Context, req *fnv1beta1.RunFunctionRe
 						},
 					},
 				}
+
+				if deletionPolicy == "Orphan" {
+					argoCdServerSpec.SetDeletionPolicy(v1.DeletionOrphan)
+				} else if deletionPolicy == "Delete" {
+					argoCdServerSpec.SetDeletionPolicy(v1.DeletionDelete)
+				}
+
+				argoCdServerSpec.SetProviderConfigReference(&v1.Reference{
+					Name: providerConfigName,
+				})
 
 				cd, err := composed.From(argoCdServerSpec)
 				if err != nil {

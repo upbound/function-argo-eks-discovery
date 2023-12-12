@@ -1,0 +1,25 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: Role
+metadata:
+  name: test-assume
+spec:
+  forProvider:
+    assumeRolePolicy: |
+      {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Effect": "Allow",
+                  "Principal": {
+                      "Federated": "arn:aws:iam::<aws-account-nummer>:oidc-provider/proidc.upbound.io"
+                  },
+                  "Action": "sts:AssumeRoleWithWebIdentity",
+                  "Condition": {
+                      "StringLike": {
+                          "proidc.upbound.io:sub": "mcp:<upbound-org>/<controlplane>:function:upbound-function-argo-eks-discovery",
+                          "proidc.upbound.io:aud": "sts.amazonaws.com"
+                      }
+                  }
+              }
+          ]
+      }
