@@ -160,12 +160,7 @@ func (f *Function) RunFunction(ctx context.Context, req *fnv1beta1.RunFunctionRe
 				if err != nil {
 					response.Fatal(rsp, errors.Wrapf(err, "failed to set caData for cluster %s", clusterName))
 				}
-				// Add v1beta1 types (including Bucket) to the composed resource scheme.
-				// composed.From uses this to automatically set apiVersion and kind.
 				_ = v1alpha1.SchemeBuilder.AddToScheme(composed.Scheme)
-				// Now you can use the endpoint and Certificate Authority data as needed.
-				// For example, you can create a BucketSpec here and add it to desired resources.
-				// Create a BucketSpec using cluster details if needed.
 				argoCdServerSpec := &v1alpha1.Cluster{
 					Spec: v1alpha1.ClusterSpec{
 						ForProvider: v1alpha1.ClusterParameters{
