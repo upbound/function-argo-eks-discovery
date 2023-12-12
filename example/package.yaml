@@ -3,4 +3,4 @@ kind: Function
 metadata:
   name: upbound-function-argo-eks-discovery
 spec:
-  package: xpkg.upbound.io/upbound/function-argo-eks-discovery:v0.0.0-20231210220707-0db522382df7
+  package: xpkg.upbound.io/upbound/function-argo-eks-discovery:v0.1.0
