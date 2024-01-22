@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/credentials v1.16.12
 	github.com/aws/aws-sdk-go-v2/service/sts v1.26.5
 	github.com/crossplane-contrib/provider-argocd v0.4.0
-	github.com/crossplane/crossplane-runtime v1.14.1
+	github.com/crossplane/crossplane-runtime v1.14.3
 	github.com/crossplane/function-sdk-go v0.1.0
 	k8s.io/apimachinery v0.28.3
 	sigs.k8s.io/controller-tools v0.13.0
